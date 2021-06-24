@@ -12,6 +12,8 @@ namespace Recuperacao.API.Context
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Sala> Salas { get; set; }
         public DbSet<Equipamento> Equipamentos { get; set; }
+        public DbSet<Acesso> Acessos { get; set; }
+
 
         public RecuperacaoContext()
         {
@@ -33,8 +35,7 @@ namespace Recuperacao.API.Context
             base.OnConfiguring(optionsBuilder);
         }
 
-        public override int SaveChanges()
+        public override int SaveChanges();
     }
 
-    
-    }
+}

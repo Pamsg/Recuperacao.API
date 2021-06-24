@@ -7,8 +7,8 @@ namespace Recuperacao.API.Domains
 {
     public class Sala : BaseDomain
     {
-        public float Andar { get; set; }
-        public float MetragemSala { get; set; }
+        public string Andar { get; set; }
+        public string MetragemSala { get; set; }
         public string NomeSala { get; set; }
     }
 }

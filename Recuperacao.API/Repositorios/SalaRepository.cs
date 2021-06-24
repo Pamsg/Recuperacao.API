@@ -1,4 +1,5 @@
-﻿using Recuperacao.API.Domains;
+﻿using Recuperacao.API.Context;
+using Recuperacao.API.Domains;
 using Recuperacao.API.Interface;
 using System;
 using System.Collections.Generic;
@@ -9,34 +10,103 @@ namespace Recuperacao.API.Repositorios
 {
     public class SalaRepository : ISala
     {
-        public void Adicionar(Sala sala) 
+        private readonly RecuperacaoContext _ctx;
+
+        public SalaRepository()
         {
-            throw new NotImplementedException();
+            _ctx = new RecuperacaoContext();
         }
 
-        public Sala BuscarPorAndar(float andar)
+        public void Adicionar(Sala sala)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _ctx.Salas.Add(sala);
+
+                _ctx.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        List<Sala> BuscarPorAndar(string andar)
+        {
+            try
+            {
+                return _ctx.Salas.Where(c => c.Andar.Contains(andar)).ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
 
         public Sala BuscarPorId(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Sala sala = _ctx.Salas.FirstOrDefault(c => c.Id == id);
+                return sala;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public void Deletar(Guid id)
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                Sala salaTemp = BuscarPorId(id);
 
-        public void Editar(Sala sala)
-        {
-            throw new NotImplementedException();
-        }
+                if (salaTemp == null)
+                    throw new Exception("Sala não encontrada");
 
-        public List<Sala> Listar()
+
+                _ctx.Salas.Remove(salaTemp);
+                _ctx.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+            public void Editar(Sala sala)
+            {
+                try
+                {
+                    Sala salaTemp = BuscarPorId(sala.Id);
+
+                    if (salaTemp == null)
+                        throw new Exception("Sala não encontrada");
+
+                    salaTemp.Andar = sala.Andar;
+
+                    _ctx.Salas.Update(salaTemp);
+                    _ctx.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                    throw new Exception(ex.Message);
+                }
+            }
+
+            public List<Sala> Listar()
+            {
+                throw new NotImplementedException();
+            }
+
+        public List<Sala> BuscarPorAndar(float andar)
         {
             throw new NotImplementedException();
         }
     }
-}
+    }
+

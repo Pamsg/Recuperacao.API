@@ -13,9 +13,7 @@ namespace Recuperacao.API.Domains
         public string Cargo { get; set; }
         public string Email { get; set; }
         public string Senha { get; set; }
+        public string TipoUsuario { get; set; }
 
-        public Guid IdAcesso { get; set; }
-        [ForeignKey("IdAcesso")]
-        public Type TipoUsuario { get; set; }
     }
 }

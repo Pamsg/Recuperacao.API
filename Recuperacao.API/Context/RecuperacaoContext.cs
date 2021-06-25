@@ -1,19 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Recuperacao.API.Domains;
 using System;
-using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace Recuperacao.API.Context
+namespace Recuperacao.Api.Contexts
 {
     public class RecuperacaoContext : DbContext
     {
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Sala> Salas { get; set; }
-        public DbSet<Equipamento> Equipamentos { get; set; }
-        public DbSet<Acesso> Acessos { get; set; }
-
+        public DbSet<Sala> Equipamentos { get; set; }
+        public DbSet<Equipamento> Equípamentos { get; set; }
+       
 
         public RecuperacaoContext()
         {
@@ -34,8 +32,45 @@ namespace Recuperacao.API.Context
 
             base.OnConfiguring(optionsBuilder);
         }
+        public override int SaveChanges()
+        {
 
-        public override int SaveChanges();
+            try
+            {
+                foreach (var entry in ChangeTracker.Entries().Where(entry => entry.Entity.GetType().GetProperty("DataCriacao") != null))
+                {
+                    if (new Guid(entry.Property("Id").CurrentValue.ToString()) == Guid.Empty)
+                        entry.Property("Id").CurrentValue = Guid.NewGuid();
+
+                    if (entry.State == EntityState.Added)
+                    {
+                        entry.Property("DataCriacao").CurrentValue = DateTime.Now;
+                        entry.Property("DataAlteracao").CurrentValue = DateTime.Now;
+                    }
+
+                    if (entry.State == EntityState.Modified)
+                    {
+                        entry.Property("DataCriacao").IsModified = false;
+                        entry.Property("DataAlteracao").CurrentValue = DateTime.Now;
+                    }
+                }
+
+                return base.SaveChanges();
+            }
+            catch (DbException db)
+            {
+                throw new Exception(db.Message);
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    throw new Exception(ex.InnerException.Message);
+                }
+
+                throw new Exception(ex.Message);
+            }
+        }
     }
-
 }
+

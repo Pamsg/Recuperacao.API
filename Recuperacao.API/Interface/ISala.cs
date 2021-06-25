@@ -10,7 +10,7 @@ namespace Recuperacao.API.Interface
     {
         List<Sala> Listar();
         Sala BuscarPorId(Guid id);
-        List<Sala> BuscarPorAndar(float andar);
+        List<Sala> BuscarPorAndar(string andar);
         void Adicionar(Sala sala);
         void Deletar(Guid id);
         void Editar(Sala sala);

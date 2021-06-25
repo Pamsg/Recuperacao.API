@@ -10,7 +10,7 @@ namespace Recuperacao.API.Interface
     {
         List<Equipamento> Listar();
         Equipamento BuscarPorId(Guid id);
-        Equipamento BuscarPorNome(string nome);
+        Equipamento BuscarPorTipo(string tipo);
         void Adicionar(Equipamento equipamento);
         void Deletar(Guid id);
         void Editar(Equipamento equipamento);

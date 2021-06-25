@@ -1,4 +1,5 @@
-﻿using Recuperacao.API.Domains;
+﻿using Recuperacao.Api.Contexts;
+using Recuperacao.API.Domains;
 using Recuperacao.API.Interface;
 using System;
 using System.Collections.Generic;
@@ -9,14 +10,25 @@ namespace Recuperacao.API.Repositorios
 {
     public class ContaRepository : IConta
     {
-        public Usuario Login(string email, string senha)
+        private readonly RecuperacaoContext _context;
+
+        public ContaRepository(RecuperacaoContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Usuario Register(string nome, string email, string senha, string tipo)
+        public Usuario Login(string email, string senha)
         {
-            throw new NotImplementedException();
+            return _context.Usuarios.FirstOrDefault(u => u.Email == email && u.Senha == senha);
+        }
+
+        public Usuario Register(string nome, string email, string senha, string tipo, string cargo, string cpf)
+        {
+            Usuario usuario = new Usuario() { Nome = nome, Email = email, Senha = senha, TipoUsuario = tipo, Cargo = cargo, CPF = cpf };
+            _context.Usuarios.Add(usuario);
+            _context.SaveChanges();
+
+            return usuario;
         }
     }
 }

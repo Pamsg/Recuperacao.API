@@ -1,5 +1,5 @@
 ﻿using Recuperacao.Api.Contexts;
-
+using Recuperacao.Api.Repositorios;
 using Recuperacao.API.Domains;
 using Recuperacao.API.Interface;
 using System;
@@ -9,20 +9,22 @@ using System.Threading.Tasks;
 
 namespace Recuperacao.API.Repositorios
 {
-    public class SalaRepository : ISala
+
+    public class EquipamentoRepository : IEquipamento
     {
+
         private readonly RecuperacaoContext _ctx;
 
-        public SalaRepository()
+        public EquipamentoRepository()
         {
             _ctx = new RecuperacaoContext();
         }
 
-        public void Adicionar(Sala sala)
+        public void Adicionar(Equipamento equipamento)
         {
             try
             {
-                _ctx.Equipamentos.Add(sala);
+                _ctx.Equipamentos.Add(equipamento);
 
                 _ctx.SaveChanges();
 
@@ -33,11 +35,11 @@ namespace Recuperacao.API.Repositorios
             }
         }
 
-        List<Sala> BuscarPorAndar(string andar)
+        List<Sala> BuscarPorTipo(string tipo)
         {
             try
             {
-                return _ctx.Equipamentos.Where(c => c.Andar.Contains(andar)).ToList();
+                return _ctx.Equipamentos.Where(c => c.Andar.Contains(tipo)).ToList();
             }
             catch (Exception ex)
             {
@@ -63,13 +65,13 @@ namespace Recuperacao.API.Repositorios
         {
             try
             {
-                Sala salaTemp = BuscarPorId(id);
+                Sala equipamentoTemp = BuscarPorId(id);
 
-                if (salaTemp == null)
-                    throw new Exception("Sala não encontrada");
+                if (equipamentoTemp == null)
+                    throw new Exception("Equipamento não encontrado");
 
 
-                _ctx.Equipamentos.Remove(salaTemp);
+                _ctx.Equipamentos.Remove(equipamentoTemp);
                 _ctx.SaveChanges();
             }
             catch (Exception ex)
@@ -78,36 +80,32 @@ namespace Recuperacao.API.Repositorios
                 throw new Exception(ex.Message);
             }
         }
-            public void Editar(Sala sala)
+        public void Editar(Equipamento equipamento)
+        {
+            try
             {
-                try
-                {
-                    Sala salaTemp = BuscarPorId(sala.Id);
+                Equipamento equipamentoTemp = BuscarPorId(equipamento.Id);
 
-                    if (salaTemp == null)
-                        throw new Exception("Sala não encontrada");
+                if (equipamentoTemp == null)
+                    throw new Exception("Equipamento não encontrada");
 
-                    salaTemp.Andar = sala.Andar;
+                equipamentoTemp.Tipo = equipamento.Tipo;
 
-                    _ctx.Equipamentos.Update(salaTemp);
-                    _ctx.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-
-                    throw new Exception(ex.Message);
-                }
+                _ctx.Equipamentos.Update(equipamentoTemp);
+                _ctx.SaveChanges();
             }
-
-            public List<Sala> Listar()
+            catch (Exception ex)
             {
-                throw new NotImplementedException();
-            }
 
-        List<Sala> ISala.BuscarPorAndar(string andar)
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public List<equipamento> Listar()
         {
             throw new NotImplementedException();
         }
-    }
-    }
 
+       
+    }
+}

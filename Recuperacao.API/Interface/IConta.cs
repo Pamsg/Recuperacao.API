@@ -10,6 +10,6 @@ namespace Recuperacao.API.Interface
     {
         Usuario Login(string email, string senha);
 
-        Usuario Register(string nome, string email, string senha, string tipo);
+        Usuario Register(string nome, string email, string senha, string tipo, string cargo, string cpf);
     }
 }

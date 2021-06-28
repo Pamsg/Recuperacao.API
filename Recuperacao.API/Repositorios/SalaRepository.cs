@@ -1,4 +1,4 @@
-﻿using Recuperacao.Api.Contexts;
+using Recuperacao.Api.Contexts;
 
 using Recuperacao.API.Domains;
 using Recuperacao.API.Interface;
@@ -22,7 +22,7 @@ namespace Recuperacao.API.Repositorios
         {
             try
             {
-                _ctx.Equipamentos.Add(sala);
+                _ctx.Salas.Add(sala);
 
                 _ctx.SaveChanges();
 
@@ -33,11 +33,12 @@ namespace Recuperacao.API.Repositorios
             }
         }
 
-        List<Sala> BuscarPorAndar(string andar)
+        public Sala BuscarPorAndar(string andar)
         {
             try
             {
-                return _ctx.Equipamentos.Where(c => c.Andar.Contains(andar)).ToList();
+                Sala sala = _ctx.Salas.FirstOrDefault(c => c.Andar == andar);
+                return sala;
             }
             catch (Exception ex)
             {
@@ -50,7 +51,7 @@ namespace Recuperacao.API.Repositorios
         {
             try
             {
-                Sala sala = _ctx.Equipamentos.FirstOrDefault(c => c.Id == id);
+                Sala sala = _ctx.Salas.FirstOrDefault(c => c.Id == id);
                 return sala;
             }
             catch (Exception ex)
@@ -69,7 +70,7 @@ namespace Recuperacao.API.Repositorios
                     throw new Exception("Sala não encontrada");
 
 
-                _ctx.Equipamentos.Remove(salaTemp);
+                _ctx.Salas.Remove(salaTemp);
                 _ctx.SaveChanges();
             }
             catch (Exception ex)
@@ -89,7 +90,7 @@ namespace Recuperacao.API.Repositorios
 
                     salaTemp.Andar = sala.Andar;
 
-                    _ctx.Equipamentos.Update(salaTemp);
+                    _ctx.Salas.Update(salaTemp);
                     _ctx.SaveChanges();
                 }
                 catch (Exception ex)
@@ -104,10 +105,9 @@ namespace Recuperacao.API.Repositorios
                 throw new NotImplementedException();
             }
 
-        List<Sala> ISala.BuscarPorAndar(string andar)
-        {
-            throw new NotImplementedException();
-        }
+      
     }
     }
+
+
 

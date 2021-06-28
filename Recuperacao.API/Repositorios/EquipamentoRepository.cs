@@ -1,4 +1,4 @@
-﻿using Recuperacao.Api.Contexts;
+using Recuperacao.Api.Contexts;
 using Recuperacao.Api.Repositorios;
 using Recuperacao.API.Domains;
 using Recuperacao.API.Interface;
@@ -19,7 +19,6 @@ namespace Recuperacao.API.Repositorios
         {
             _ctx = new RecuperacaoContext();
         }
-
         public void Adicionar(Equipamento equipamento)
         {
             try
@@ -27,85 +26,54 @@ namespace Recuperacao.API.Repositorios
                 _ctx.Equipamentos.Add(equipamento);
 
                 _ctx.SaveChanges();
-
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }
+              }
         }
 
-        List<Sala> BuscarPorTipo(string tipo)
+        public Equipamento BuscarPorId(Guid id)
         {
             try
             {
-                return _ctx.Equipamentos.Where(c => c.Andar.Contains(tipo)).ToList();
+                Equipamento equipamento = _ctx.Equipamentos.FirstOrDefault(c => c.Id == id);
+                return equipamento;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
-                throw new Exception(ex.Message);
+                throw;
             }
         }
 
-        public Sala BuscarPorId(Guid id)
+        public Equipamento BuscarPorTipo(string tipo)
         {
             try
             {
-                Sala sala = _ctx.Equipamentos.FirstOrDefault(c => c.Id == id);
-                return sala;
+                Equipamento equipamento = _ctx.Equipamentos.FirstOrDefault(c => c.Tipo == tipo);
+                return equipamento;
             }
             catch (Exception ex)
             {
+
                 throw new Exception(ex.Message);
-            }
+            }  
         }
 
         public void Deletar(Guid id)
         {
-            try
-            {
-                Sala equipamentoTemp = BuscarPorId(id);
-
-                if (equipamentoTemp == null)
-                    throw new Exception("Equipamento não encontrado");
-
-
-                _ctx.Equipamentos.Remove(equipamentoTemp);
-                _ctx.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-
-                throw new Exception(ex.Message);
-            }
+            throw new NotImplementedException();
         }
+
         public void Editar(Equipamento equipamento)
-        {
-            try
-            {
-                Equipamento equipamentoTemp = BuscarPorId(equipamento.Id);
-
-                if (equipamentoTemp == null)
-                    throw new Exception("Equipamento não encontrada");
-
-                equipamentoTemp.Tipo = equipamento.Tipo;
-
-                _ctx.Equipamentos.Update(equipamentoTemp);
-                _ctx.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public List<equipamento> Listar()
         {
             throw new NotImplementedException();
         }
 
-       
+        public List<Equipamento> Listar()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Recuperacao.API.Domains;
 using System;
 using System.Data.Common;
@@ -9,8 +9,8 @@ namespace Recuperacao.Api.Contexts
     public class RecuperacaoContext : DbContext
     {
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Sala> Equipamentos { get; set; }
-        public DbSet<Equipamento> Equípamentos { get; set; }
+        public DbSet<Sala> Salas { get; set; }
+        public DbSet<Equipamento> Equipamentos { get; set; }
        
 
         public RecuperacaoContext()
@@ -73,4 +73,3 @@ namespace Recuperacao.Api.Contexts
         }
     }
 }
-

@@ -1,5 +1,4 @@
 using Recuperacao.Api.Contexts;
-
 using Recuperacao.API.Domains;
 using Recuperacao.API.Interface;
 using System;
@@ -102,12 +101,19 @@ namespace Recuperacao.API.Repositorios
 
             public List<Sala> Listar()
             {
-                throw new NotImplementedException();
+            try
+            {
+                List<Sala> salas = _ctx.Salas.ToList();
+                return salas;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
             }
 
       
     }
     }
-
-
 

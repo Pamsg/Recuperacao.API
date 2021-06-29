@@ -1,11 +1,11 @@
 using Recuperacao.Api.Contexts;
-using Recuperacao.Api.Repositorios;
+
 using Recuperacao.API.Domains;
 using Recuperacao.API.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Recuperacao.API.Repositorios
 {
@@ -63,17 +63,59 @@ namespace Recuperacao.API.Repositorios
 
         public void Deletar(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Equipamento equipamentoTemp = BuscarPorId(id);
+
+                if (equipamentoTemp == null)
+                    throw new Exception("Equipamento não encontrada");
+
+
+                _ctx.Equipamentos.Remove(equipamentoTemp);
+                _ctx.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
 
         public void Editar(Equipamento equipamento)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Equipamento equipamentoTemp = BuscarPorId(equipamento.Id);
+
+                if (equipamentoTemp == null)
+                    throw new Exception("Equipamento não encontrada");
+
+                equipamentoTemp.Tipo = equipamento.Tipo;
+
+                _ctx.Equipamentos.Update(equipamentoTemp);
+                _ctx.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
         }
 
         public List<Equipamento> Listar()
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Equipamento> equipamentos = _ctx.Equipamentos.ToList();
+                return equipamentos;
+            }
+            catch (Exception ex) 
+            {
+
+                throw new Exception(ex.Message); 
+            }
         }
     }
 }
+

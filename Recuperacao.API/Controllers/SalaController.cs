@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Recuperacao.API.Domains;
 using Recuperacao.API.Interface;
@@ -21,34 +21,113 @@ namespace Recuperacao.API.Controllers
             _salaRepository = new SalaRepository();
         }
         [HttpGet]
-        public List<Sala> Get()
+        public IActionResult Get()
         {
-            return _salaRepository.Listar();
+            try
+            {
+                var salas = _salaRepository.Listar();
+
+                if (salas.Count == 0)
+                    return NoContent();
+
+                return Ok(salas);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
-        public Sala Get(Guid id)
+        public IActionResult Get(Guid id)
         {
-            return _salaRepository.BuscarPorId(id);       
+            try
+            {
+                Sala sala = _salaRepository.BuscarPorId(id);
+
+                if (sala == null)
+                    return NotFound();
+
+                return Ok(sala);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }       
+        }
+        [HttpGet("{id}")]
+        public IActionResult Get(string andar)
+        {
+            try
+            {
+                Sala sala = _salaRepository.BuscarPorAndar(andar);
+
+                if (andar == null)
+                    return NotFound();
+
+                return Ok(andar);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
-        public void Post(Sala sala)
+        public IActionResult Post(Sala sala)
         {
-             _salaRepository.Adicionar(sala);
+            try
+            {
+                _salaRepository.Adicionar(sala);
+
+                return Ok(sala);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
-        public void Put(Guid id, Sala sala)
+        public IActionResult Put(Guid id, Sala sala)
         {
-            sala.Id = id;
-             _salaRepository.Editar(sala);
+            try
+            {
+                var salaTemp = _salaRepository.BuscarPorId(id);
+
+                if (salaTemp == null)
+                    return NotFound();
+
+                sala.Id = id;
+                _salaRepository.Editar(sala);
+
+                return Ok(sala);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
-        public void Delete(Guid id)
+        public IActionResult Delete(Guid id)
         {
-            _salaRepository.Deletar(id);
+            try
+            {
+                _salaRepository.Deletar(id);
+
+                return Ok(id);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

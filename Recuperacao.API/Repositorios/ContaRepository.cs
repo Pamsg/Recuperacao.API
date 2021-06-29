@@ -1,4 +1,4 @@
-﻿using Recuperacao.Api.Contexts;
+using Recuperacao.Api.Contexts;
 using Recuperacao.API.Domains;
 using Recuperacao.API.Interface;
 using System;

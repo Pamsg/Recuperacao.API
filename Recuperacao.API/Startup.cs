@@ -1,10 +1,12 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace Recuperacao.Api
 {
@@ -20,12 +22,25 @@ namespace Recuperacao.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+         
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 //Correção do erro object cycle
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-                //Remover propriedades nulas
-                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                
+            });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API - Documentação", Version = "v1" });
+
+
+                // Mostrar o caminho dos comentários dos métodos Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+               // c.IncludeXmlComments(xmlPath);
+
             });
 
         }
@@ -37,25 +52,15 @@ namespace Recuperacao.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            // Habilitamos o Swagger.
-            app.UseSwagger();
-
-            // Especificamos o Endpoit do JSON do Swagger.
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
             });
-
-            app.UseStaticFiles();
+            app.UseSwagger();
 
             app.UseRouting();
 
-            app.UseAuthentication();
-
             app.UseAuthorization();
-
-            app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints =>
             {

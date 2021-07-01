@@ -1,6 +1,6 @@
-using Recuperacao.Api.Contexts;
 using Recuperacao.API.Domains;
 using Recuperacao.API.Interface;
+using Recuperacao.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,3 +32,4 @@ namespace Recuperacao.API.Repositorios
         }
     }
 }
+

@@ -57,7 +57,7 @@ namespace Recuperacao.API.Controllers
                 return BadRequest(ex.Message);
             }       
         }
-        [HttpGet("{id}")]
+        [HttpGet("andar/{andar}")]
         public IActionResult Get(string andar)
         {
             try
@@ -92,7 +92,7 @@ namespace Recuperacao.API.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpPut("{id}")]
         public IActionResult Put(Guid id, Sala sala)
         {
             try
@@ -114,7 +114,7 @@ namespace Recuperacao.API.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
             try
